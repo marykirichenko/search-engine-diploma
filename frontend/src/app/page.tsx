@@ -5,9 +5,9 @@ import {HeaderCard} from "@/components/headerCard";
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 async function getPageData(): Promise<ArticleCardProps[]> {
-  const res = await fetch('https://127.0.0.1:5000/api/search?query=new');
-  if (!res.ok) throw new Error('Failed to fetch');
-  return await res.json();
+    const res = await fetch('https://127.0.0.1:5000/api/search?query=new');
+    if (!res.ok) throw new Error('Failed to fetch');
+    return await res.json();
 }
 
 // TODO: cleanup TS typeerrors
@@ -15,11 +15,14 @@ async function getPageData(): Promise<ArticleCardProps[]> {
 
 export default async function Home() {
     const articles = await getPageData();
+    const handleLastArticleRef = (node: HTMLDivElement | null) => {
+        // Handle the ref here
+    };
     return (
         <>
             <HeaderCard/>
             <Typography variant={'h5'} style={{margin : '30px 10px 0px 20px', display: 'block', fontWeight: '700'}}> Latest literature:</Typography>
-            <ArticleCardGrid articles={articles} />
+            <ArticleCardGrid articles={articles} lastArticleRef={handleLastArticleRef} />
         </>
     );
 }

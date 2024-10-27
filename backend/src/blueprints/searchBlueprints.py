@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from src.utils import utils
+from utils import utils
 import json
 search_blueprint = Blueprint('search', __name__)
 
