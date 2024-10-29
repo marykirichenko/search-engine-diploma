@@ -5,6 +5,9 @@ from blueprints.exportBlueprints import export_blueprint
 from flask import Flask
 from flask_cors import CORS
 
+SPRINGER_API_KEY="4907229a03e875715d1f3b3ee17a9df5"
+BASE_URL="https://api.springernature.com/meta/v2/json"
+
 # TODO: add a config so when running on locally we use HTTPS, then on build we use sertifications and https
 # TODO: export blueprints
 # TODO: testing !!!!
