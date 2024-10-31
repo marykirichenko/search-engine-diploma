@@ -1,16 +1,10 @@
 import os
 from dotenv import load_dotenv
 from blueprints.searchBlueprints import search_blueprint
-from blueprints.exportBlueprints import export_blueprint
 from flask import Flask
 from flask_cors import CORS
 
-SPRINGER_API_KEY="4907229a03e875715d1f3b3ee17a9df5"
-BASE_URL="https://api.springernature.com/meta/v2/json"
-
-# TODO: add a config so when running on locally we use HTTPS, then on build we use sertifications and https
-# TODO: export blueprints
-# TODO: testing !!!!
+# TODO: add a config so when running on locally we use HTTPS, then on build we use certifications and https
 
 # set the current working directory to the app.py for the relative path usage
 os.chdir(os.path.dirname(__file__))
@@ -21,7 +15,6 @@ CORS(app)
 
 if "SPRINGER_API_KEY" in os.environ:
     app.register_blueprint(search_blueprint, url_prefix='/api')
-    app.register_blueprint(export_blueprint, url_prefix='/api')
 else:
     raise Exception("No api key found. Provide one with SPRINGER_API_KEY key in .env at the top of the project")
 
