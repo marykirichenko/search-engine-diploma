@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from blueprints.searchBlueprints import search_blueprint
 from flask import Flask
-from flask_cors import CORS
+from flask_cors import CORS 
 
 # TODO: add a config so when running on locally we use HTTPS, then on build we use certifications and https
 
