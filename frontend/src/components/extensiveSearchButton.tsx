@@ -4,12 +4,12 @@ import { styled } from "@mui/material/styles";
 import { useOptionsError } from "@/contexts/optionsErrorContext";
 import {useRouter} from "next/navigation";
 
-export const ExtensiveSearchButton = ({ searchType, literatureType, queries, constraints, keyword, dois, dateRange, serialNumber }: SearchProps) => {
+export const ExtensiveSearchButton = ({ searchType, literatureType, queries, constraints, keyword, dois, dateRange, serialNumber, openAccess }: SearchProps) => {
     const { validationErrors } = useOptionsError();
     const router = useRouter();
 
 
-    const constructedQuery = buildQuery({ searchType, literatureType, queries, constraints, keyword, dois, dateRange, serialNumber });
+    const constructedQuery = buildQuery({ searchType, literatureType, queries, constraints, keyword, dois, dateRange, serialNumber, openAccess });
     const isButtonDisabled = () => {
 
         switch (searchType) {

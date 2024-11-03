@@ -22,7 +22,7 @@ export default async function Home() {
         <>
             <HeaderCard/>
             <Typography variant={'h5'} style={{margin : '30px 10px 0px 20px', display: 'block', fontWeight: '700'}}> Latest literature:</Typography>
-            <ArticleCardGrid articles={articles} lastArticleRef={handleLastArticleRef} />
+            <ArticleCardGrid articles={articles}  />
         </>
     );
 }

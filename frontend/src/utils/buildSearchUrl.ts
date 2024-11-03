@@ -1,7 +1,7 @@
 import {SearchProps} from "@/components/searchParameters";
 
 export function buildQuery(searchParams: SearchProps): string {
-    const { searchType, literatureType, queries, constraints, keyword, dois, dateRange, serialNumber } = searchParams;
+    const { searchType, literatureType, queries, constraints, keyword, dois, dateRange, serialNumber, openAccess } = searchParams;
     let baseUrlExtention = ''
     const queryParams: string[] = [];
 
@@ -54,6 +54,10 @@ export function buildQuery(searchParams: SearchProps): string {
 
     if (literatureType && literatureType.exclude) {
         queryParams.push(`exclude=${encodeURIComponent(`{"type":"${literatureType.type}"}`)}`);
+    }
+
+    if (openAccess) {
+        queryParams.push('openAccess=true');
     }
 
     //TODO: Date should be joined with space, not &

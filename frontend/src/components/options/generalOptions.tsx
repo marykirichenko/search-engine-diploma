@@ -16,22 +16,32 @@ import {ChangeEvent} from "react";
 
 interface GeneralOptionsProps {
     literatureType: string;
-    handleChange: (event: SelectChangeEvent<string>) => void;
+    handleChange: (event: SelectChangeEvent) => void;
     exclude: boolean;
     handleExcludeChange: (event: ChangeEvent<string>) => void;
     dateRange: [Date | null, Date | null];
     setDateRange: (dateRange: [Date | null, Date | null]) => void;
+    openAccess: boolean,
+    setOpenAccess: () => void;
 }
 
-export const GeneralOptions = ({ literatureType, handleChange, dateRange, setDateRange, exclude, handleExcludeChange }: GeneralOptionsProps) => {
-
+export const GeneralOptions = ({ literatureType, handleChange, dateRange, setDateRange, exclude, handleExcludeChange, openAccess, setOpenAccess }: GeneralOptionsProps) => {
     return (
         <>
+            <FormControlLabel
+                value="end"
+                control={<Switch color="primary" checked={openAccess} onChange={setOpenAccess} />}
+                label="Open Access"
+                labelPlacement="end"
+                sx={{ mt: 2 }}
+            />
             <Card sx={{ bgcolor: 'white', borderColor: theme.palette.primary.main, borderWidth: 1, borderStyle: 'solid', mt: 2, boxShadow: 3 }}>
+
                 <CardContent>
                     <Typography variant="h6" component="div" sx={{ mb: 2 }}>
                         Filter by literature type:
                     </Typography>
+
                     <FormControl variant={"standard"} sx={{ width: '100%' }}>
                         <InputLabel>Literature type</InputLabel>
                         <br/>
