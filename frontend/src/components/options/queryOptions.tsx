@@ -14,6 +14,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import theme from "@/theme";
 import { ChangeEvent, useState, SyntheticEvent } from "react";
+import InfoIcon from "@/components/infoIcon";
 
 interface QueryOptionsProps {
     queries: string[];
@@ -68,6 +69,7 @@ export const QueryOptions = ({ queries, setQueries, keyword, setKeyword, constra
             <CardContent>
                 <Typography variant="h6" component="div" sx={{ mt: 2 }}>
                     Search Options
+                    <InfoIcon text={'You can use AND, OR, NOT operators to combine queries. For example: "machine learning" AND "deep learning". Also you can provide a single keyword, that will be searched among the extensive base of articles'} />
                 </Typography>
                 <Tabs value={tabValue} onChange={handleTabChange} centered>
                     <Tab label="Query" />

@@ -8,6 +8,8 @@ import { ArticleCardProps } from "@/components/articleCard";
 import { styled } from "@mui/material/styles";
 import { ScrollUpButton } from "@/components/scrollUpButton";
 import NoElementsFoundCard from "@/components/noElementsFoundCard";
+import ExportButton from "@/components/ExportButton";
+
 
 export default function SearchResults({ query, headerQuery }: { query: string, headerQuery?: string }) {
     const [articles, setArticles] = useState<ArticleCardProps[]>([]);
@@ -53,9 +55,12 @@ export default function SearchResults({ query, headerQuery }: { query: string, h
 
     return (
         <>
-            <Typography variant={'h5'} style={{ margin: '30px 10px 0px 20px', display: 'block', fontWeight: '700' }}>
-                Search results for {(headerQuery || query).replace(/^\(|\)$/g, "").replace(/"/g, "")}:
-            </Typography>
+            <HeaderContainer>
+                <Typography variant={'h5'} style={{ fontWeight: '700' }}>
+                    Search results for {(headerQuery || query).replace(/^\(|\)$/g, "").replace(/"/g, "")}:
+                </Typography>
+                <ExportButton query={query} startIdx={startIdx} />
+            </HeaderContainer>
             <ArticleCardGrid articles={articles} lastArticleRef={lastArticleRef} />
             {loading && (
                 <LoadingWrapper>
@@ -75,3 +80,9 @@ const LoadingWrapper = styled('div')({
     justifyContent: 'center'
 });
 
+const HeaderContainer = styled('div')({
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: '30px 10px 0px 20px',
+});

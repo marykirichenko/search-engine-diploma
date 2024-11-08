@@ -2,7 +2,9 @@ import os
 from dotenv import load_dotenv
 from blueprints.searchBlueprints import search_blueprint
 from flask import Flask
-from flask_cors import CORS 
+from flask_cors import CORS
+
+from src.blueprints.exportBlueprint import export_blueprint
 
 # TODO: add a config so when running on locally we use HTTPS, then on build we use certifications and https
 
@@ -15,6 +17,7 @@ CORS(app)
 
 if "SPRINGER_API_KEY" in os.environ:
     app.register_blueprint(search_blueprint, url_prefix='/api')
+    app.register_blueprint(export_blueprint, url_prefix='/api')
 else:
     raise Exception("No api key found. Provide one with SPRINGER_API_KEY key in .env at the top of the project")
 

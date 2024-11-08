@@ -12,6 +12,7 @@ import {
 import theme from "@/theme";
 import {DatePickerOptions} from "@/components/options/datePickerOptions";
 import {ChangeEvent} from "react";
+import InfoIcon from "@/components/infoIcon";
 
 
 interface GeneralOptionsProps {
@@ -35,6 +36,7 @@ export const GeneralOptions = ({ literatureType, handleChange, dateRange, setDat
                 labelPlacement="end"
                 sx={{ mt: 2 }}
             />
+            <InfoIcon text={"Get full-text content for over 1 million open access articles, curating content from BioMed Central and SpringerOpen journals"}></InfoIcon>
             <Card sx={{ bgcolor: 'white', borderColor: theme.palette.primary.main, borderWidth: 1, borderStyle: 'solid', mt: 2, boxShadow: 3 }}>
 
                 <CardContent>

@@ -1,5 +1,7 @@
 import requests
 import os
+import csv
+import io
 from dotenv import load_dotenv
 
 load_dotenv('../../.env')
@@ -157,3 +159,21 @@ def search_springer_by_isbn_issn(openAccess, identifier_type, identifier, start=
         return response.json()
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
+
+
+def convert_results_to_csv(all_results):
+    output = io.StringIO()
+    writer = csv.writer(output)
+    if all_results:
+        header = all_results[0].keys()
+        writer.writerow(header)
+        for result in all_results:
+            if 'authors' in result and isinstance(result['authors'], list):
+                result['authors'] = ', '.join([author['creator'] for author in result['authors']])
+            if 'disciplines' in result and isinstance(result['disciplines'], list):
+                result['disciplines'] = ', '.join([discipline['term'] for discipline in result['disciplines']])
+            writer.writerow(result.values())
+
+    csv_data = output.getvalue()
+    output.close()
+    return csv_data
