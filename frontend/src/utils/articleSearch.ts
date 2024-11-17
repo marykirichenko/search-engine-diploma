@@ -5,13 +5,24 @@ export async function fetchSearchResults(query: string,start:number = 1): Promis
     let searchParams;
     if(!querySegment){
         searchParams = new URLSearchParams({query: query, start: start.toString()});
-        const res = await fetch(`http://127.0.0.1:5000/api/search?${searchParams}`, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        if (!res.ok) throw new Error('Failed to fetch');
-        return await res.json();
+        if(query.split('')[0] !== '('){
+            const res = await fetch(`http://127.0.0.1:5000/api/search/${query}`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!res.ok) throw new Error('Failed to fetch');
+            return await res.json();
+        }else{
+            const res = await fetch(`http://127.0.0.1:5000/api/search?${searchParams}`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!res.ok) throw new Error('Failed to fetch');
+            return await res.json();
+        }
+
     }else{
         searchParams = new URLSearchParams(querySegment);
         searchParams.append('start', start.toString());

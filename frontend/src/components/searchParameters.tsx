@@ -100,7 +100,6 @@ export const SearchParameters = () => {
                     constraints={constraints}
                     setConstraints={setConstraints}
                 />
-                <InfoIcon text={'You can use AND, OR, NOT operators to combine queries. For example: "machine learning" AND "deep learning" '} />
                 <ExtensiveSearchButton searchType={'Article'} literatureType={{type: literatureType, exclude}} queries={queries} constraints={constraints} keyword={keyword} dateRange={dateRange} openAccess={openAccess}/>
             </TabPanel>
             <TabPanel value={value} index={1}>

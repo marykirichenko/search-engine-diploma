@@ -4,9 +4,17 @@ export function buildQuery(searchParams: SearchProps): string {
     const { searchType, literatureType, queries, constraints, keyword, dois, dateRange, serialNumber, openAccess } = searchParams;
     let baseUrlExtention = ''
     const queryParams: string[] = [];
-
     if (keyword) {
         baseUrlExtention += `/${encodeURIComponent(keyword)}`;
+        if (dateRange) {
+            const [dateFrom, dateTo] = dateRange;
+            if (dateFrom) {
+                queryParams.push(`datefrom:${dateFrom.toISOString().split('T')[0]}`);
+            }
+            if (dateTo) {
+                queryParams.push(`dateto:${dateTo.toISOString().split('T')[0]}`);
+            }
+        }
     } else {
         switch (searchType) {
             case 'Article':

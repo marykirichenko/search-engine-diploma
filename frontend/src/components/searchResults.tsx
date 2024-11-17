@@ -16,7 +16,6 @@ export default function SearchResults({ query, headerQuery }: { query: string, h
     const [loading, setLoading] = useState(true);
     const observer = useRef<IntersectionObserver | null>(null);
     const [startIdx, setStartIdx] = useState(1);
-
     const loadMore = useCallback(() => {
         setLoading(true);
         fetchSearchResults(query, startIdx)

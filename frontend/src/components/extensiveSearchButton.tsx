@@ -8,13 +8,14 @@ export const ExtensiveSearchButton = ({ searchType, literatureType, queries, con
     const { validationErrors } = useOptionsError();
     const router = useRouter();
 
-
     const constructedQuery = buildQuery({ searchType, literatureType, queries, constraints, keyword, dois, dateRange, serialNumber, openAccess });
+
+
     const isButtonDisabled = () => {
 
         switch (searchType) {
             case 'Article':
-                return (!queries || queries.length === 0) || queries.filter(query => query === "").length || validationErrors.query;
+                return (!queries || queries.length === 0 || queries.filter(query => query === "").length) && !keyword || validationErrors.query;
             case 'DOI':
                 return (!dois || dois.length === 0) || dois.filter(doi => doi === "").length || validationErrors.doi;
             case 'ISSN':

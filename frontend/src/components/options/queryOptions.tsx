@@ -59,6 +59,7 @@ export const QueryOptions = ({ queries, setQueries, keyword, setKeyword, constra
 
     const handleKeywordChange = (event: ChangeEvent<HTMLInputElement>) => {
         setKeyword(event.target.value);
+
         if (event.target.value) {
             setQueries(['']);
         }

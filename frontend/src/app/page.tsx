@@ -5,7 +5,7 @@ import {HeaderCard} from "@/components/headerCard";
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 async function getPageData(): Promise<ArticleCardProps[]> {
-    const res = await fetch('https://127.0.0.1:5000/api/search?query=new');
+    const res = await fetch('http://127.0.0.1:5000/api/search?query=new');
     if (!res.ok) throw new Error('Failed to fetch');
     return await res.json();
 }

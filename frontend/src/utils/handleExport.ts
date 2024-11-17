@@ -1,34 +1,46 @@
+import {findSourceMap} from "module";
+
 export async function handleExport(query: string, startIdx: number) {
     try {
-        // Extract the type from the current URL, ignoring any query parameters
         const urlPath = window.location.pathname.split('/');
-        const type = urlPath[urlPath.length - 1]; // Get the last part of the path without query parameters
+        const type = urlPath[urlPath.length - 1];
 
-        // Create a URLSearchParams instance
         const searchParams = new URLSearchParams();
         searchParams.append('amountOfArticles', startIdx.toString()); // Use startIdx as amountOfArticles
-        searchParams.append('type', type); // Set the extracted type
+        const urlParams = new URLSearchParams(window.location.search);
+        const firstParam = urlParams.entries().next().value;
+
+        if(firstParam && firstParam[0] === 'query'){
+            searchParams.set('type', firstParam[0]);
+        }else if(!['issn', 'isbn', 'doi'].includes(type)){
+            searchParams.set('type', 'keyword');
+            searchParams.set('keyword', type);
+        } else{
+            searchParams.append('type', type);
+        }
 
         // Adjust the query parameter name based on the type
         switch (type) {
-            case 'keyword':
-                searchParams.set('keyword', query);
-                break;
             case 'issn':
-                searchParams.set('issn', query);
+                if(firstParam){
+                    searchParams.set('issn', firstParam[1]);
+                }
                 break;
             case 'isbn':
                 searchParams.set('isbn', query);
                 break;
             case 'doi':
-                searchParams.set('dois', query);
+                if(firstParam){
+                    searchParams.set('dois', firstParam[1]);
+                }
                 break;
-            case 'query':
-                searchParams.set('query', query);
+            case 'search':
+                if(firstParam && firstParam[0] === 'query'){
+                    searchParams.set('query', firstParam[1]);
+                }
                 break;
         }
 
-        // Fetch and download the export file
         const response = await fetch(`http://127.0.0.1:5000/api/export?${searchParams.toString()}`, {
             method: 'GET',
             headers: {
