@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv('../../.env')
 
 
-def search_springer(openAccess, query, start=1, datefrom=None, dateto=None, literatureType=None, exclude=None):
+def search_springer(openAccess, query, start=1, datefrom=None, dateto=None, literatureType=None):
     base_url = os.getenv('META_BASE_URL') if not openAccess else os.getenv('OPEN_ACCESS_BASE_URL')
     params = {
         "q": query,
@@ -19,14 +19,12 @@ def search_springer(openAccess, query, start=1, datefrom=None, dateto=None, lite
         params["datefrom"] = datefrom
         params["dateto"] = dateto
 
-    if exclude:
-        for key, value in exclude.items():
-            params["q"] += f" -({key}:{value})"
+
+    if literatureType:
+        params["q"] += f"type:{literatureType}"
 
     url = requests.Request('GET', base_url, params=params).prepare().url
 
-    if literatureType:
-        url += f"&type:{literatureType}"
 
     try:
         response = requests.get(url)
@@ -71,8 +69,7 @@ def is_in_types(value):
     return value in literatureTypeEnum
 
 
-def search_springer_by_keyword(openAccess, keyword, start=1, datefrom=None, dateto=None, literatureType=None,
-                               exclude=None):
+def search_springer_by_keyword(openAccess, keyword, start=1, datefrom=None, dateto=None, literatureType=None,):
     base_url = os.getenv('META_BASE_URL') if not openAccess else os.getenv('OPEN_ACCESS_BASE_URL')
     params = {
         "q": "keyword:" + keyword.replace(" ", "%20"),
@@ -84,14 +81,10 @@ def search_springer_by_keyword(openAccess, keyword, start=1, datefrom=None, date
         params["datefrom"] = datefrom
         params["dateto"] = dateto
 
-    if exclude:
-        for key, value in exclude.items():
-            params["q"] += f" -({key}:{value})"
+    if literatureType:
+        params["q"] += f"type:{literatureType}"
 
     url = requests.Request('GET', base_url, params=params).prepare().url
-
-    if literatureType:
-        url += f"&type:{literatureType}"
 
     try:
         response = requests.get(url)
@@ -101,7 +94,7 @@ def search_springer_by_keyword(openAccess, keyword, start=1, datefrom=None, date
         return {"error": str(e)}
 
 
-def search_springer_by_doi(openAccess, dois, start=1, datefrom=None, dateto=None, literatureType=None, exclude=None):
+def search_springer_by_doi(openAccess, dois, start=1, datefrom=None, dateto=None, literatureType=None):
     base_url = os.getenv('META_BASE_URL') if not openAccess else os.getenv('OPEN_ACCESS_BASE_URL')
     params = {
         "q": " OR ".join(f"doi:{doi}" for doi in dois),
@@ -113,14 +106,11 @@ def search_springer_by_doi(openAccess, dois, start=1, datefrom=None, dateto=None
         params["datefrom"] = datefrom
         params["dateto"] = dateto
 
-    if exclude:
-        for key, value in exclude.items():
-            params["q"] += f" -({key}:{value})"
-
-    url = requests.Request('GET', base_url, params=params).prepare().url
 
     if literatureType:
-        url += f"&type:{literatureType}"
+        params["q"] += f"type:{literatureType}"
+
+    url = requests.Request('GET', base_url, params=params).prepare().url
 
     try:
         response = requests.get(url)
@@ -131,7 +121,7 @@ def search_springer_by_doi(openAccess, dois, start=1, datefrom=None, dateto=None
 
 
 def search_springer_by_isbn_issn(openAccess, identifier_type, identifier, start=1, datefrom=None, dateto=None,
-                                 literatureType=None, exclude=None):
+                                 literatureType=None):
     base_url = os.getenv('META_BASE_URL') if not openAccess else os.getenv('OPEN_ACCESS_BASE_URL')
     params = {
         "q": identifier_type + ':' + identifier,
@@ -143,14 +133,11 @@ def search_springer_by_isbn_issn(openAccess, identifier_type, identifier, start=
         params["datefrom"] = datefrom
         params["dateto"] = dateto
 
-    if exclude:
-        for key, value in exclude.items():
-            params["q"] += f" -({key}:{value})"
+    if literatureType:
+        params["q"] += f"type:{literatureType}"
 
     url = requests.Request('GET', base_url, params=params).prepare().url
 
-    if literatureType:
-        url += f"&type:{literatureType}"
 
     try:
         response = requests.get(url)

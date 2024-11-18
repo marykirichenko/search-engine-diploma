@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles";
 import { Tabs, Tab, Box, SelectChangeEvent } from "@mui/material";
-import { ChangeEvent, ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PackedAccordion } from "@/components/accordation";
 import { DOIOptions } from "@/components/options/doiOptions";
@@ -9,13 +9,11 @@ import { SerialNumberOptions } from "@/components/options/serialNumberOptions";
 import { GeneralOptions } from "@/components/options/generalOptions";
 import {ExtensiveSearchButton} from "@/components/extensiveSearchButton";
 import {useOptionsError} from "@/contexts/optionsErrorContext";
-import InfoIcon from "@/components/infoIcon";
 
 export interface SearchProps {
     searchType: 'Article' | 'DOI' | 'ISSN' | 'ISBN',
     literatureType?: {
-        type: string,
-        exclude: boolean
+        type: string
     },
     queries?: string[],
     constraints?: string[],
@@ -29,8 +27,7 @@ export interface SearchProps {
 export const SearchParameters = () => {
     const [value, setValue] = useState(0);
     const [openAccess, setOpenAccess] = useState(false)
-    const [literatureType, setLiteratureType] = useState('Book');
-    const [exclude, setExclude] = useState(false);
+    const [literatureType, setLiteratureType] = useState('Both');
     const [queries, setQueries] = useState<string[]>(['']);
     const [keyword, setKeyword] = useState('');
     const [dois, setDois] = useState<string[]>([]);
@@ -66,9 +63,6 @@ export const SearchParameters = () => {
         setLiteratureType(event.target.value as string);
     };
 
-    const handleExcludeChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setExclude(event.target.checked);
-    };
 
     const handleOpenAccessChange = () => {
         setOpenAccess(!openAccess);
@@ -86,8 +80,6 @@ export const SearchParameters = () => {
                 <GeneralOptions
                     literatureType={literatureType}
                     handleChange={handleBookChange}
-                    exclude={exclude}
-                    handleExcludeChange={handleExcludeChange}
                     dateRange={dateRange}
                     setDateRange={setDateRange}
                     setOpenAccess={handleOpenAccessChange}
@@ -100,49 +92,43 @@ export const SearchParameters = () => {
                     constraints={constraints}
                     setConstraints={setConstraints}
                 />
-                <ExtensiveSearchButton searchType={'Article'} literatureType={{type: literatureType, exclude}} queries={queries} constraints={constraints} keyword={keyword} dateRange={dateRange} openAccess={openAccess}/>
+                <ExtensiveSearchButton searchType={'Article'} literatureType={{type: literatureType}} queries={queries} constraints={constraints} keyword={keyword} dateRange={dateRange} openAccess={openAccess}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <PackedAccordion summary="What is Digital Object Identifier (DOI)?" details="Digital Object Identifier - a unique alphanumeric string assigned to a digital object, such as a research article, dataset, or book. It provides a persistent and permanent link to the object, allowing it to be easily identified, cited, and accessed. Example: 10.1007/978-3-319-07410-8_4" />
                 <GeneralOptions
                     literatureType={literatureType}
                     handleChange={handleBookChange}
-                    exclude={exclude}
-                    handleExcludeChange={handleExcludeChange}
                     dateRange={dateRange}
                     setDateRange={setDateRange}
                     setOpenAccess={handleOpenAccessChange}
                 />
                 <DOIOptions dois={dois} setDois={setDois}/>
-                <ExtensiveSearchButton searchType={'DOI'} literatureType={{type: literatureType, exclude}} dois={dois} dateRange={dateRange} openAccess={openAccess}/>
+                <ExtensiveSearchButton searchType={'DOI'} literatureType={{type: literatureType}} dois={dois} dateRange={dateRange} openAccess={openAccess}/>
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <PackedAccordion summary="What is International Standard Serial Number (ISSN)?" details="International Standart Serial Number - an 8-digit code used to uniquely identify a serial publication, such as a journal, magazine, or periodical, in print or electronic format. Example: 1861-0692" />
                 <GeneralOptions
                     literatureType={literatureType}
                     handleChange={handleBookChange}
-                    exclude={exclude}
-                    handleExcludeChange={handleExcludeChange}
                     dateRange={dateRange}
                     setDateRange={setDateRange}
                     setOpenAccess={handleOpenAccessChange}
                 />
                 <SerialNumberOptions serialNumberType={'ISSN'} serialNumber={serialNumber} setSerialNumber={setSerialNumber} />
-                <ExtensiveSearchButton searchType={'ISSN'} literatureType={{type: literatureType, exclude}}  dateRange={dateRange} serialNumber={serialNumber} openAccess={openAccess}/>
+                <ExtensiveSearchButton searchType={'ISSN'} literatureType={{type: literatureType}}  dateRange={dateRange} serialNumber={serialNumber} openAccess={openAccess}/>
             </TabPanel>
             <TabPanel value={value} index={3}>
                 <PackedAccordion summary="What is International Standard Book Number (ISBN)?" details="International Standard Book Number (ISBN) is a 13-digit or 10-digit unique identifier assigned to a book or book-like publication. It is used to identify and manage books in various formats, including print, e-book, and audiobook. Example: 978-0-387-79148-7" />
                 <GeneralOptions
                     literatureType={literatureType}
                     handleChange={handleBookChange}
-                    exclude={exclude}
-                    handleExcludeChange={handleExcludeChange}
                     dateRange={dateRange}
                     setDateRange={setDateRange}
                     setOpenAccess={handleOpenAccessChange}
                 />
                 <SerialNumberOptions serialNumberType={'ISBN'} serialNumber={serialNumber} setSerialNumber={setSerialNumber} />
-                <ExtensiveSearchButton searchType={'ISBN'} literatureType={{type: literatureType, exclude}} dateRange={dateRange} serialNumber={serialNumber} openAccess={openAccess}/>
+                <ExtensiveSearchButton searchType={'ISBN'} literatureType={{type: literatureType}} dateRange={dateRange} serialNumber={serialNumber} openAccess={openAccess}/>
             </TabPanel>
         </SearchOptionsWrapper>
     );

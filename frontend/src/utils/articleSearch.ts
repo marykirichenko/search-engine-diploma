@@ -1,10 +1,21 @@
 import { ArticleCardProps } from "@/components/articleCard";
 
 export async function fetchSearchResults(query: string,start:number = 1, openAccess:boolean = false): Promise<ArticleCardProps[]> {
-    const [pathSegment, querySegment] = query.split('?')
-    let searchParams;
+    let [pathSegment, querySegment] = query.split('?')
+    let searchParams =  new URLSearchParams();
+
     if(!querySegment){
-        searchParams = new URLSearchParams({query: query, start: start.toString()});
+        searchParams.append('start', start.toString())
+
+        const keyValuePairs = query.split(" ");
+        const literatureTypePair = keyValuePairs.find(pair => pair.startsWith("literatureType"));
+
+        searchParams.append('query', query.replace(/\+?literatureType[^&]*/g, ''))
+
+        if (literatureTypePair) {
+            const [key, value] = literatureTypePair.split("=");
+            searchParams.append(key, value);
+        }
 
         if(openAccess){
             searchParams.append('openAccess', 'true');
@@ -30,9 +41,17 @@ export async function fetchSearchResults(query: string,start:number = 1, openAcc
         }
 
     }else{
-        console.log('HERE')
-        console.log(querySegment)
-        searchParams = new URLSearchParams({openAccess: openAccess.toString()});
+
+        const keyValuePairs = querySegment.split(" ");
+        const literatureTypePair = keyValuePairs.find(pair => pair.startsWith("literatureType"));
+
+        if (literatureTypePair) {
+            const [key, value] = literatureTypePair.split("=");
+            searchParams.append(key, value);
+        }
+
+        querySegment = querySegment.replace(/\s*literatureType=[^ ]+/, '')
+        searchParams.append('openAccess',openAccess.toString());
         const res = await fetch(`http://127.0.0.1:5000/api/search/${pathSegment}?${querySegment}&start=${start.toString()}`+(searchParams ? '&'+searchParams : ''), {
             headers: {
                 'Content-Type': 'application/json'

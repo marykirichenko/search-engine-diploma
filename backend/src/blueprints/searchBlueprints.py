@@ -7,7 +7,7 @@ search_blueprint = Blueprint('search', __name__)
 
 # boolean constraints queries will be build in frontend, general
 # search method can take a single param query and a multiple params query
-# http://127.0.0.1:5000/api/search?query=machine learning&start=2&type=Journal&exclude={"type":"Book"}
+# http://127.0.0.1:5000/api/search?query=machine learning&start=2&type=Journal
 
 @search_blueprint.route('/search', methods=['GET'])
 def search():
@@ -16,16 +16,8 @@ def search():
     datefrom = request.args.get('datefrom')
     dateto = request.args.get('dateto')
     type = request.args.get('literatureType')
-    exclude = request.args.get('exclude')
     openAccess = request.args.get('openAccess', 'false') == 'true'
 
-    print('OPEN ACCESS', request.args.to_dict())
-
-    if exclude:
-        try:
-            exclude = json.loads(exclude)
-        except json.JSONDecodeError:
-            return jsonify({"error": "Invalid exclude parameter"}), 400
 
     if type and not utils.is_in_types(type):
         return jsonify({"error": "Invalid literature type"}), 400
@@ -33,7 +25,7 @@ def search():
     if not query:
         return jsonify({"error": "Query should be provided"}), 400
 
-    raw_results = utils.search_springer(openAccess, query, start, datefrom, dateto, type, exclude)
+    raw_results = utils.search_springer(openAccess, query, start, datefrom, dateto, type)
     formatted_results = utils.format_search_results(raw_results)
 
     return jsonify(formatted_results)
@@ -48,19 +40,11 @@ def search_by_keyword(keyword):
     dateto = request.args.get('dateto')
     literatureType = request.args.get('literatureType')
     start = start or 1
-    exclude = request.args.get('exclude')
     openAccess = request.args.get('openAccess', 'false') == 'true'
-
-    if exclude:
-        try:
-            exclude = json.loads(exclude)
-        except json.JSONDecodeError:
-            return jsonify({"error": "Invalid exclude parameter"}), 400
 
     if literatureType and not utils.is_in_types(literatureType):
         return jsonify({"error": "Invalid literature type"}), 400
-    raw_results = utils.search_springer_by_keyword(openAccess, keyword, start, datefrom, dateto, literatureType,
-                                                   exclude)
+    raw_results = utils.search_springer_by_keyword(openAccess, keyword, start, datefrom, dateto, literatureType)
     formatted_results = utils.format_search_results(raw_results)
 
     return jsonify(formatted_results)
@@ -77,25 +61,17 @@ def search_by_doi():
     else:
         return jsonify({"error": "DOIs should be provided"}), 400
 
-    print('OPEN ACCESS', request.args.to_dict())
 
     start = request.args.get('start', 1)
     datefrom = request.args.get('datefrom')
     dateto = request.args.get('dateto')
     type = request.args.get('literatureType')
-    exclude = request.args.get('exclude')
     openAccess = request.args.get('openAccess', 'false') == 'true'
-
-    if exclude:
-        try:
-            exclude = json.loads(exclude)
-        except json.JSONDecodeError:
-            return jsonify({"error": "Invalid exclude parameter"}), 400
 
     if type and not utils.is_in_types(type):
         return jsonify({"error": "Invalid literature type"}), 400
 
-    raw_results = utils.search_springer_by_doi(openAccess, dois, start, datefrom, dateto, type, exclude)
+    raw_results = utils.search_springer_by_doi(openAccess, dois, start, datefrom, dateto, type)
     formatted_results = utils.format_search_results(raw_results)
 
     return jsonify(formatted_results)
@@ -113,21 +89,13 @@ def search_by_isbn():
     datefrom = request.args.get('datefrom')
     dateto = request.args.get('dateto')
     type = request.args.get('literatureType')
-    exclude = request.args.get('exclude')
     openAccess = request.args.get('openAccess', 'false') == 'true'
 
-    print('OPEN ACCESS', request.args.to_dict())
-
-    if exclude:
-        try:
-            exclude = json.loads(exclude)
-        except json.JSONDecodeError:
-            return jsonify({"error": "Invalid exclude parameter"}), 400
 
     if type and not utils.is_in_types(type):
         return jsonify({"error": "Invalid literature type"}), 400
 
-    raw_results = utils.search_springer_by_isbn_issn(openAccess, "isbn", isbn, start, datefrom, dateto, type, exclude)
+    raw_results = utils.search_springer_by_isbn_issn(openAccess, "isbn", isbn, start, datefrom, dateto, type)
     formatted_results = utils.format_search_results(raw_results)
 
     return jsonify(formatted_results)
@@ -145,21 +113,13 @@ def search_by_issn():
     datefrom = request.args.get('datefrom')
     dateto = request.args.get('dateto')
     type = request.args.get('literatureType')
-    exclude = request.args.get('exclude')
     openAccess = request.args.get('openAccess', 'false') == 'true'
 
-    print('OPEN ACCESS', request.args.to_dict())
-
-    if exclude:
-        try:
-            exclude = json.loads(exclude)
-        except json.JSONDecodeError:
-            return jsonify({"error": "Invalid exclude parameter"}), 400
 
     if type and not utils.is_in_types(type):
         return jsonify({"error": "Invalid literature type"}), 400
 
-    raw_results = utils.search_springer_by_isbn_issn(openAccess, "issn", issn, start, datefrom, dateto, type, exclude)
+    raw_results = utils.search_springer_by_isbn_issn(openAccess, "issn", issn, start, datefrom, dateto, type)
     formatted_results = utils.format_search_results(raw_results)
 
     return jsonify(formatted_results)

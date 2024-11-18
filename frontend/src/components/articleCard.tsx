@@ -20,11 +20,11 @@ export type ArticleCardProps = {
     language?: string,
 }
 
+// TODO:  2 times page is loaded, exports without open access, extend query build
 export const ArticleCard = ({title, authors, abstract, pdf_link, open_access, publisher, publication_date, subjects, disciplines ,content_type, language} : ArticleCardProps) => {
     const abstractSnippet = typeof abstract === 'string'
         ? (abstract ? abstract.substring(0, 300) : 'No abstract')
-        : (abstract ? Object.values(abstract)[0] : 'No abstract');
-    console.log({title, authors, abstract, pdf_link, open_access, publisher, publication_date, subjects, disciplines ,content_type, language})
+        : (abstract ? Object.values(abstract)[0] : 'No abstract')
     return (
         <Card sx={{margin: 2, boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.2)'}}>
             <CardContent>

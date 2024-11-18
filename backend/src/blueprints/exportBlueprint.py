@@ -17,7 +17,6 @@ def export_articles():
     datefrom = request.args.get('datefrom')
     dateto = request.args.get('dateto')
     literatureType = request.args.get('literatureType')
-    exclude = request.args.get('exclude')
     openAccess = request.args.get('openAccess', 'false') == 'true'
 
     all_results = []
@@ -28,7 +27,6 @@ def export_articles():
             'datefrom': datefrom,
             'dateto': dateto,
             'literatureType': literatureType,
-            'exclude': exclude,
             'openAccess': str(openAccess).lower()
         }
 

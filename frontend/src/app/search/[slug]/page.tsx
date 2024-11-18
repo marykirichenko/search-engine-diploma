@@ -21,13 +21,12 @@ export default async function SearchPage({ params, searchParams }: { params: Par
     } else if ('isbn' in searchParams) {
         query = `${params.slug}?isbn=${searchParams.isbn}`;
     } else if (!['issn', 'isbn', 'doi','query'].includes(params.slug)){
-        query = `${params.slug}?`;
+        query = `${params.slug}${searchParams.literatureType? `&literatureType=${searchParams.literatureType}?`:'?'}`;
     }
 
     const queryParams = new URLSearchParams();
     let dateQuery = '';
 
-    console.log(searchParams)
     for (const [key, value] of Object.entries(searchParams).slice(1)) {
         if (key.includes('datefrom') || key.includes('dateto')) {
             dateQuery += `${key} `;
@@ -44,8 +43,6 @@ export default async function SearchPage({ params, searchParams }: { params: Par
     }
 
     query += ` ${queryParams.toString()}` + dateQuery;
-
-
 
     if(Object.keys(searchParams).length > 0 ) {
         const [key, value] = Object.entries(searchParams)[0];

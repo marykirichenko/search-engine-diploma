@@ -11,22 +11,19 @@ import {
 } from "@mui/material";
 import theme from "@/theme";
 import {DatePickerOptions} from "@/components/options/datePickerOptions";
-import {ChangeEvent} from "react";
 import InfoIcon from "@/components/infoIcon";
 
 
 interface GeneralOptionsProps {
     literatureType: string;
     handleChange: (event: SelectChangeEvent) => void;
-    exclude: boolean;
-    handleExcludeChange: (event: ChangeEvent<string>) => void;
     dateRange: [Date | null, Date | null];
     setDateRange: (dateRange: [Date | null, Date | null]) => void;
     openAccess: boolean,
     setOpenAccess: () => void;
 }
 
-export const GeneralOptions = ({ literatureType, handleChange, dateRange, setDateRange, exclude, handleExcludeChange, openAccess, setOpenAccess }: GeneralOptionsProps) => {
+export const GeneralOptions = ({ literatureType, handleChange, dateRange, setDateRange, openAccess, setOpenAccess }: GeneralOptionsProps) => {
     return (
         <>
             <FormControlLabel
@@ -46,22 +43,14 @@ export const GeneralOptions = ({ literatureType, handleChange, dateRange, setDat
 
                     <FormControl variant={"standard"} sx={{ width: '100%' }}>
                         <InputLabel>Literature type</InputLabel>
-                        <br/>
-                        <FormControlLabel
-                            value="end"
-                            control={<Switch color="primary" checked={exclude}
-                                             onChange={handleExcludeChange} />}
-                            label="Exclude"
-                            labelPlacement="end"
-                            sx={{ mb: 2 }}
-                        />
+
                         <Select
                             labelId="demo-simple-select-standard-label"
                             value={literatureType}
                             onChange={handleChange}
                             label="Literature type"
                         >
-                            {!exclude && <MenuItem value={'Both'}>Both</MenuItem>}
+                            <MenuItem value={'Both'}>Both</MenuItem>
                             <MenuItem value={'Book'}>Book</MenuItem>
                             <MenuItem value={'Journal'}>Journal</MenuItem>
                         </Select>
