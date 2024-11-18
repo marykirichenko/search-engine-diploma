@@ -25,11 +25,24 @@ export default async function SearchPage({ params, searchParams }: { params: Par
     }
 
     const queryParams = new URLSearchParams();
-    for (const [key, value] of Object.entries(searchParams)) {
-        queryParams.append(key, value);
+    let dateQuery = '';
+
+    for (const [key, value] of Object.entries(searchParams).slice(1)) {
+        if (key.includes('datefrom') || key.includes('dateto')) {
+            dateQuery += `${key} `;
+        } else {
+            queryParams.append(key, value);
+        }
     }
 
-    query += queryParams.toString();
+    dateQuery = dateQuery.trim();
+    if (dateQuery) {
+        dateQuery = `${dateQuery}`;
+    }
+
+    query += ` ${queryParams.toString()}` + dateQuery;
+
+
     const [key, value] = Object.entries(searchParams)[0];
     const headerQuery = !['issn', 'isbn', 'doi','query'].includes(params.slug)?`keyword ${params.slug}`:`${key}: ${value}`;
     return <SearchResults query={query} headerQuery={headerQuery}/>;

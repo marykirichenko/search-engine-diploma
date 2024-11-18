@@ -6,15 +6,6 @@ export function buildQuery(searchParams: SearchProps): string {
     const queryParams: string[] = [];
     if (keyword) {
         baseUrlExtention += `/${encodeURIComponent(keyword)}`;
-        if (dateRange) {
-            const [dateFrom, dateTo] = dateRange;
-            if (dateFrom) {
-                queryParams.push(`datefrom:${dateFrom.toISOString().split('T')[0]}`);
-            }
-            if (dateTo) {
-                queryParams.push(`dateto:${dateTo.toISOString().split('T')[0]}`);
-            }
-        }
     } else {
         switch (searchType) {
             case 'Article':
@@ -24,15 +15,6 @@ export function buildQuery(searchParams: SearchProps): string {
                         queryStr += ` ${constraints[i - 1]} "${queries[i]}"`;
                     }
                     queryParams.push(`query=${encodeURIComponent(`(${queryStr})`)}`);
-                }
-                if (dateRange) {
-                    const [dateFrom, dateTo] = dateRange;
-                    if (dateFrom) {
-                        queryParams.push(`datefrom:${dateFrom.toISOString().split('T')[0]}`);
-                    }
-                    if (dateTo) {
-                        queryParams.push(`dateto:${dateTo.toISOString().split('T')[0]}`);
-                    }
                 }
                 break;
             case 'DOI':
@@ -56,6 +38,16 @@ export function buildQuery(searchParams: SearchProps): string {
         }
     }
 
+    if (dateRange) {
+        const [dateFrom, dateTo] = dateRange;
+        if (dateFrom) {
+            queryParams.push(`datefrom:${dateFrom.toISOString().split('T')[0]}`);
+        }
+        if (dateTo) {
+            queryParams.push(`dateto:${dateTo.toISOString().split('T')[0]}`);
+        }
+    }
+
     if (literatureType && searchType !== 'Keyword' && !literatureType.exclude && literatureType.type !== 'Both') {
         queryParams.push(`literatureType=${literatureType.type}`);
     }
@@ -68,6 +60,5 @@ export function buildQuery(searchParams: SearchProps): string {
         queryParams.push('openAccess=true');
     }
 
-    //TODO: Date should be joined with space, not &
-    return baseUrlExtention +`?${queryParams.join('&')}`;
+    return baseUrlExtention +`?${queryParams.join(' ')}`;
 }

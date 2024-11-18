@@ -24,9 +24,7 @@ export async function fetchSearchResults(query: string,start:number = 1): Promis
         }
 
     }else{
-        searchParams = new URLSearchParams(querySegment);
-        searchParams.append('start', start.toString());
-        const res = await fetch(`http://127.0.0.1:5000/api/search/${pathSegment}?${searchParams}`, {
+        const res = await fetch(`http://127.0.0.1:5000/api/search/${pathSegment}?${querySegment}&start=${start.toString()}`, {
             headers: {
                 'Content-Type': 'application/json'
             }
