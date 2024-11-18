@@ -9,7 +9,6 @@ load_dotenv('../../.env')
 
 def search_springer(openAccess, query, start=1, datefrom=None, dateto=None, literatureType=None, exclude=None):
     base_url = os.getenv('META_BASE_URL') if not openAccess else os.getenv('OPEN_ACCESS_BASE_URL')
-    print(openAccess)
     params = {
         "q": query,
         "s": start,

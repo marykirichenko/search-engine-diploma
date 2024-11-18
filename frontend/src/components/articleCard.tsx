@@ -21,14 +21,18 @@ export type ArticleCardProps = {
 }
 
 export const ArticleCard = ({title, authors, abstract, pdf_link, open_access, publisher, publication_date, subjects, disciplines ,content_type, language} : ArticleCardProps) => {
+    const abstractSnippet = typeof abstract === 'string'
+        ? (abstract ? abstract.substring(0, 300) : 'No abstract')
+        : (abstract ? Object.values(abstract)[0] : 'No abstract');
+    console.log({title, authors, abstract, pdf_link, open_access, publisher, publication_date, subjects, disciplines ,content_type, language})
     return (
         <Card sx={{margin: 2, boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.2)'}}>
             <CardContent>
                 <h3>{title} {
-                    open_access === true && <span style={{backgroundColor:'green', color:'white', borderRadius: '50%', padding:'3px 8px', fontSize: '10px'}}>Open Access</span>
+                    (open_access === "true") && <span style={{backgroundColor:'green', color:'white', borderRadius: '50%', padding:'3px 8px', fontSize: '10px'}}>Open Access</span>
                 }</h3>
                 <b>Authors: </b> {authors && authors.map((author,i) => <span key={i}>{author.creator}</span>)}
-                <p><b>Abstract: </b>{abstract?.substring(0, 300)+'...'}</p>
+                <p><b>Abstract: </b>{abstractSnippet}</p>
                 <Box display="flex" justifyContent="space-between" mt={2}>
                     {language && <><b>Language:</b> {language}</>}
                     {publication_date && <><b>Publish Date:</b> {publication_date}</>}

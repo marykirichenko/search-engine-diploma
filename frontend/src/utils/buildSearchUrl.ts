@@ -56,9 +56,5 @@ export function buildQuery(searchParams: SearchProps): string {
         queryParams.push(`exclude=${encodeURIComponent(`{"type":"${literatureType.type}"}`)}`);
     }
 
-    if (openAccess) {
-        queryParams.push('openAccess=true');
-    }
-
-    return baseUrlExtention +`?${queryParams.join(' ')}`;
+    return baseUrlExtention +`?${queryParams.join(' ')}` + (openAccess ? `&openAccess=true` : '')
 }

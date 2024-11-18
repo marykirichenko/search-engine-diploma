@@ -11,14 +11,14 @@ import NoElementsFoundCard from "@/components/noElementsFoundCard";
 import ExportButton from "@/components/ExportButton";
 
 
-export default function SearchResults({ query, headerQuery }: { query: string, headerQuery?: string }) {
+export default function SearchResults({ query, headerQuery, openAccess }: { query: string, headerQuery?: string, openAccess?: boolean }) {
     const [articles, setArticles] = useState<ArticleCardProps[]>([]);
     const [loading, setLoading] = useState(true);
     const observer = useRef<IntersectionObserver | null>(null);
     const [startIdx, setStartIdx] = useState(1);
     const loadMore = useCallback(() => {
         setLoading(true);
-        fetchSearchResults(query, startIdx)
+        fetchSearchResults(query, startIdx, openAccess)
             .then((data) => {
                 setArticles((prevArticles) => [...prevArticles, ...data]);
                 setLoading(false);

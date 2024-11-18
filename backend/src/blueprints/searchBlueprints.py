@@ -19,6 +19,8 @@ def search():
     exclude = request.args.get('exclude')
     openAccess = request.args.get('openAccess', 'false') == 'true'
 
+    print('OPEN ACCESS', request.args.to_dict())
+
     if exclude:
         try:
             exclude = json.loads(exclude)
@@ -75,6 +77,8 @@ def search_by_doi():
     else:
         return jsonify({"error": "DOIs should be provided"}), 400
 
+    print('OPEN ACCESS', request.args.to_dict())
+
     start = request.args.get('start', 1)
     datefrom = request.args.get('datefrom')
     dateto = request.args.get('dateto')
@@ -112,6 +116,8 @@ def search_by_isbn():
     exclude = request.args.get('exclude')
     openAccess = request.args.get('openAccess', 'false') == 'true'
 
+    print('OPEN ACCESS', request.args.to_dict())
+
     if exclude:
         try:
             exclude = json.loads(exclude)
@@ -141,6 +147,8 @@ def search_by_issn():
     type = request.args.get('literatureType')
     exclude = request.args.get('exclude')
     openAccess = request.args.get('openAccess', 'false') == 'true'
+
+    print('OPEN ACCESS', request.args.to_dict())
 
     if exclude:
         try:
