@@ -27,6 +27,7 @@ export default async function SearchPage({ params, searchParams }: { params: Par
     const queryParams = new URLSearchParams();
     let dateQuery = '';
 
+
     for (const [key, value] of Object.entries(searchParams).slice(1)) {
         if (key.includes('datefrom') || key.includes('dateto')) {
             dateQuery += `${key} `;
@@ -35,15 +36,21 @@ export default async function SearchPage({ params, searchParams }: { params: Par
         }
     }
 
-    dateQuery = dateQuery.trim();
+
     if (dateQuery) {
+        dateQuery = dateQuery.trim();
         dateQuery = `${dateQuery}`;
     }
 
     query += ` ${queryParams.toString()}` + dateQuery;
 
 
-    const [key, value] = Object.entries(searchParams)[0];
-    const headerQuery = !['issn', 'isbn', 'doi','query'].includes(params.slug)?`keyword ${params.slug}`:`${key}: ${value}`;
-    return <SearchResults query={query} headerQuery={headerQuery}/>;
+    if(Object.keys(searchParams).length > 0 ) {
+        const [key, value] = Object.entries(searchParams)[0];
+        const headerQuery = !['issn', 'isbn', 'doi','query'].includes(params.slug)?`keyword ${params.slug}`:`${key}: ${value}`;
+        return <SearchResults query={query} headerQuery={headerQuery}/>;
+    }else{
+        return <SearchResults query={query} headerQuery={params.slug}/>;
+    }
+
 }
