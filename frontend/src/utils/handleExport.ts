@@ -1,4 +1,3 @@
-import {findSourceMap} from "module";
 
 export async function handleExport(query: string, startIdx: number) {
     try {
@@ -10,35 +9,48 @@ export async function handleExport(query: string, startIdx: number) {
         const urlParams = new URLSearchParams(window.location.search);
         const firstParam = urlParams.entries().next().value;
 
+        const keyValuePairs = query.split(" ");
+        const literatureTypePair = keyValuePairs.find(pair => pair.startsWith("literatureType"));
+
+
         if(firstParam && firstParam[0] === 'query'){
-            searchParams.set('type', firstParam[0]);
+            searchParams.set('type', firstParam[0].replace(/\+?literatureType[^&]*/g, ''));
         }else if(!['issn', 'isbn', 'doi'].includes(type)){
             searchParams.set('type', 'keyword');
             searchParams.set('keyword', type);
+            if(firstParam){
+                searchParams.append(firstParam[0],firstParam[1])
+            }
         } else{
             searchParams.append('type', type);
         }
 
-        // Adjust the query parameter name based on the type
         switch (type) {
             case 'issn':
                 if(firstParam){
-                    searchParams.set('issn', firstParam[1]);
+                    searchParams.set('issn', firstParam[1].replace(/\+?literatureType[^&]*/g, ''));
                 }
+
                 break;
             case 'isbn':
-                searchParams.set('isbn', query);
+                searchParams.set('isbn', query.replace(/\+?literatureType[^&]*/g, ''));
                 break;
             case 'doi':
                 if(firstParam){
-                    searchParams.set('dois', firstParam[1]);
+                    searchParams.set('dois', firstParam[1].replace(/\+?literatureType[^&]*/g, ''));
                 }
                 break;
             case 'search':
                 if(firstParam && firstParam[0] === 'query'){
-                    searchParams.set('query', firstParam[1]);
+                    searchParams.set('query', firstParam[1].replace(/\+?literatureType[^&]*/g, ''));
                 }
                 break;
+
+        }
+
+        if (literatureTypePair) {
+            const [key, value] = literatureTypePair.split("=");
+            searchParams.append(key, value);
         }
 
         const response = await fetch(`http://127.0.0.1:5000/api/export?${searchParams.toString()}`, {
