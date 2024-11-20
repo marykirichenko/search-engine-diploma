@@ -20,7 +20,7 @@ export type ArticleCardProps = {
     language?: string,
 }
 
-// TODO:  2 times page is loaded, extend query build
+// TODO:  extend query build
 export const ArticleCard = ({title, authors, abstract, pdf_link, open_access, publisher, publication_date, subjects, disciplines ,content_type, language} : ArticleCardProps) => {
     const abstractSnippet = typeof abstract === 'string'
         ? (abstract ? abstract.substring(0, 300) : 'No abstract')

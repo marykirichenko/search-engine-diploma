@@ -82,7 +82,7 @@ def search_by_isbn():
     if not isbn:
         return jsonify({"error": "ISBN should be provided"}), 400
 
-    start = request.args.get('start', 1)
+    start = request.args.get('start')
     datefrom = request.args.get('datefrom')
     dateto = request.args.get('dateto')
     type = request.args.get('literatureType')
@@ -105,7 +105,8 @@ def search_by_issn():
     if not issn:
         return jsonify({"error": "ISSN should be provided"}), 400
 
-    start = request.args.get('start', 1)
+    start = request.args.get('start')
+
     datefrom = request.args.get('datefrom')
     dateto = request.args.get('dateto')
     type = request.args.get('literatureType')

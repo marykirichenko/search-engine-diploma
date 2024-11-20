@@ -19,12 +19,10 @@ def search_springer(openAccess, query, start=1, datefrom=None, dateto=None, lite
         params["datefrom"] = datefrom
         params["dateto"] = dateto
 
-
     if literatureType:
         params["q"] += f"type:{literatureType}"
 
     url = requests.Request('GET', base_url, params=params).prepare().url
-
 
     try:
         response = requests.get(url)
@@ -120,7 +118,7 @@ def search_springer_by_doi(openAccess, dois, start=1, datefrom=None, dateto=None
         return {"error": str(e)}
 
 
-def search_springer_by_isbn_issn(openAccess, identifier_type, identifier, start=1, datefrom=None, dateto=None,
+def search_springer_by_isbn_issn(openAccess, identifier_type, identifier, start, datefrom=None, dateto=None,
                                  literatureType=None):
     base_url = os.getenv('META_BASE_URL') if not openAccess else os.getenv('OPEN_ACCESS_BASE_URL')
     params = {
@@ -137,7 +135,6 @@ def search_springer_by_isbn_issn(openAccess, identifier_type, identifier, start=
         params["q"] += f"type:{literatureType}"
 
     url = requests.Request('GET', base_url, params=params).prepare().url
-
 
     try:
         response = requests.get(url)

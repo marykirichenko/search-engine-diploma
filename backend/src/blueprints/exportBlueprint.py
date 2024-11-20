@@ -11,10 +11,12 @@ def export_articles():
     export_type = request.args.get('type')
     amount_of_articles = request.args.get('amountOfArticles', type=int)
 
+    articles_per_page = 15
+
     if amount_of_articles is None or amount_of_articles <= 0:
         return jsonify({"error": "A valid amountOfArticles should be provided"}), 400
 
-    total_pages = (amount_of_articles + 9) // 10  # Ceiling division
+    total_pages = (amount_of_articles + articles_per_page - 1) // articles_per_page  # Ceiling division
 
     datefrom = request.args.get('datefrom')
     dateto = request.args.get('dateto')
@@ -23,20 +25,26 @@ def export_articles():
 
     all_results = []
 
-    for page in range(1, total_pages + 1):
+
+    for page in range(1, total_pages):
+        start_idx = (page - 1) * articles_per_page + 1
         temp_args = {
-            'start': page,
+            'start': start_idx,
             'datefrom': datefrom,
             'dateto': dateto,
             'literatureType': literatureType,
             'openAccess': str(openAccess).lower()
         }
 
+
+
         if export_type == 'query':
             query = request.args.get('query')
             if not query:
                 return jsonify({"error": "Query should be provided for query search"}), 400
             temp_args['query'] = query
+
+            request.args = temp_args
             results = search()
 
         elif export_type == 'keyword':
@@ -46,11 +54,15 @@ def export_articles():
             temp_args['keyword'] = keyword
             results = search_by_keyword(keyword)
 
+            request.args = temp_args
+
         elif export_type == 'doi':
             dois = request.args.get('dois')
             if not dois:
                 return jsonify({"error": "DOIs should be provided for DOI search"}), 400
             temp_args['dois'] = dois
+
+            request.args = temp_args
             results = search_by_doi()
 
         elif export_type == 'isbn':
@@ -60,17 +72,20 @@ def export_articles():
             temp_args['isbn'] = isbn
             results = search_by_isbn()
 
+            request.args = temp_args
+
         elif export_type == 'issn':
             issn = request.args.get('issn')
             if not issn:
                 return jsonify({"error": "ISSN should be provided for ISSN search"}), 400
             temp_args['issn'] = issn
+
+            request.args = temp_args
             results = search_by_issn()
 
         else:
             return jsonify({"error": "Invalid export type"}), 400
 
-        request.args = temp_args
 
         if isinstance(results, tuple):
             return results.get_json()
