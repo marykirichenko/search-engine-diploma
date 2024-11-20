@@ -1,5 +1,4 @@
 "use client"
-
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchSearchResults } from "@/utils/articleSearch";
 import { CircularProgress, Typography } from "@mui/material";
@@ -10,47 +9,71 @@ import { ScrollUpButton } from "@/components/scrollUpButton";
 import NoElementsFoundCard from "@/components/noElementsFoundCard";
 import ExportButton from "@/components/ExportButton";
 
-
 export default function SearchResults({ query, headerQuery, openAccess }: { query: string, headerQuery?: string, openAccess?: boolean }) {
-    const [articles, setArticles] = useState<ArticleCardProps[]>([]);
-    const [loading, setLoading] = useState(true);
-    const observer = useRef<IntersectionObserver | null>(null);
-    const [startIdx, setStartIdx] = useState(1);
+    const [articles, setArticles] = useState<ArticleCardProps[]>([])
+    const [loading, setLoading] = useState(true)
+    const observer = useRef<IntersectionObserver | null>(null)
+    const [startIdx, setStartIdx] = useState(1)
+    const [hasMoreArticles, setHasMoreArticles] = useState(true)
+
+    const initialLoad = useCallback(() => {
+
+        setLoading(true)
+        setHasMoreArticles(true)
+
+        fetchSearchResults(query, 1, openAccess)
+            .then((data) => {
+                setArticles(data)
+                setStartIdx(16)
+                setHasMoreArticles(data.length > 0)
+            })
+            .catch((error) => {
+                console.error('Error during initial load:', error)
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+    }, [query, openAccess])
+
     const loadMore = useCallback(() => {
-        setLoading(true);
+
+        if (loading || !hasMoreArticles) return
+        setLoading(true)
+
         fetchSearchResults(query, startIdx, openAccess)
             .then((data) => {
-                setArticles((prevArticles) => [...prevArticles, ...data]);
-                setLoading(false);
+                if (data.length === 0) {
+                    setHasMoreArticles(false)
+                } else {
+                    setArticles((prevArticles) => [...prevArticles, ...data])
+                    setStartIdx((prevStartIdx) => prevStartIdx + 15)
+                }
             })
-            .catch((e) => {
-                console.error('Error while fetching search results:', e);
-                setLoading(false);
-            });
-    }, [query, startIdx]);
+            .catch((error) => {
+                console.error('Error during load more:', error)
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+    }, [query, startIdx, openAccess, loading, hasMoreArticles])
 
     useEffect(() => {
-        setArticles([]);
-        setStartIdx(1);
-        loadMore();
-    }, [query]);
-
-    useEffect(() => {
-        if (startIdx > 1) {
-            loadMore();
-        }
-    }, [startIdx]);
+        initialLoad()
+    }, [query])
 
     const lastArticleRef = useCallback((node: HTMLDivElement | null) => {
-        if (loading) return;
+        if (loading || !hasMoreArticles) return
+
         if (observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
-                setStartIdx((prevStartInx) => prevStartInx + 15);
+                loadMore();
             }
         });
-        if (node) observer.current.observe(node);
-    }, [loading]);
+
+        if (node) observer.current.observe(node)
+    }, [loadMore, loading, hasMoreArticles])
+
 
     return (
         <>

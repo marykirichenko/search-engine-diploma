@@ -9,8 +9,6 @@ import theme from "@/theme";
 import Link from "next/link";
 import {StyledHeaderButton} from "@/components/headerCard";
 
-// TODO: search history
-
 export default function Navbar() {
     return (
         <ThemeProvider theme={theme}>
