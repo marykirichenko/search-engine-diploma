@@ -7,6 +7,7 @@ export async function handleExport(query: string, startIdx: number) {
         const searchParams = new URLSearchParams();
         searchParams.append('amountOfArticles', startIdx.toString()); // Use startIdx as amountOfArticles
         const urlParams = new URLSearchParams(window.location.search);
+
         const firstParam = urlParams.entries().next().value;
 
         const keyValuePairs = query.split(" ");
@@ -51,6 +52,10 @@ export async function handleExport(query: string, startIdx: number) {
         if (literatureTypePair) {
             const [key, value] = literatureTypePair.split("=");
             searchParams.append(key, value);
+        }
+
+        if(urlParams.get('openAccess')){
+            searchParams.append('openAccess', 'true');
         }
 
         const response = await fetch(`http://127.0.0.1:5000/api/export?${searchParams.toString()}`, {
