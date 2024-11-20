@@ -12,7 +12,7 @@ export function buildQuery(searchParams: SearchProps): string {
                 if (queries && queries.length > 0 && constraints) {
                     let queryStr = queries[0];
                     for (let i = 1; i < queries.length; i++) {
-                        queryStr += ` ${constraints[i - 1]} "${queries[i]}"`;
+                        queryStr += ` ${constraints[i - 1]} ${queries[i]}`;
                     }
                     queryParams.push(`query=${encodeURIComponent(`(${queryStr})`)}`);
                 }

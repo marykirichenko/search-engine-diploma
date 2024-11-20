@@ -65,6 +65,17 @@ export const QueryOptions = ({ queries, setQueries, keyword, setKeyword, constra
         }
     };
 
+    const addBracket = (bracket: string, index: number) => {
+        const newQueries = [...queries];
+        if (bracket === ')') {
+            newQueries[index] = newQueries[index] + bracket;
+        } else {
+            newQueries[index] = bracket + newQueries[index];
+        }
+        setQueries(newQueries);
+        setConstraints([...constraints, '']);
+    };
+
     return (
         <Card sx={{ bgcolor: 'white', borderColor: theme.palette.primary.main, borderWidth: 1, borderStyle: 'solid', mt: 2, boxShadow: 3 }}>
             <CardContent>
@@ -108,6 +119,22 @@ export const QueryOptions = ({ queries, setQueries, keyword, setKeyword, constra
                                     <IconButton onClick={() => removeQueryField(index)} sx={{ ml: 2 }}>
                                         <DeleteIcon />
                                     </IconButton>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => addBracket('(', index)}
+                                        sx={{ bgcolor: 'rgba(23,52,85,255)', ml: 2 }}
+                                    >
+                                        Add (
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => addBracket(')', index)}
+                                        sx={{ bgcolor: 'rgba(23,52,85,255)', ml: 2 }}
+                                    >
+                                        Add )
+                                    </Button>
                                 </Box>
                             </Box>
                         ))}
@@ -120,7 +147,6 @@ export const QueryOptions = ({ queries, setQueries, keyword, setKeyword, constra
                         >
                             Add Query
                         </Button>
-
                     </>
                 )}
                 {tabValue === 1 && (

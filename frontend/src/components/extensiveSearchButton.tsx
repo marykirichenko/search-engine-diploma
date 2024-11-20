@@ -9,8 +9,6 @@ export const ExtensiveSearchButton = ({ searchType, literatureType, queries, con
     const router = useRouter();
 
     const constructedQuery = buildQuery({ searchType, literatureType, queries, constraints, keyword, dois, dateRange, serialNumber, openAccess });
-
-
     const isButtonDisabled = () => {
 
         switch (searchType) {
