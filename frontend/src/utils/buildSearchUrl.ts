@@ -2,10 +2,10 @@ import {SearchProps} from "@/components/searchParameters";
 
 export function buildQuery(searchParams: SearchProps): string {
     const { searchType, literatureType, queries, constraints, keyword, dois, dateRange, serialNumber, openAccess } = searchParams;
-    let baseUrlExtention = ''
+    let baseUrlExtension = ''
     const queryParams: string[] = [];
     if (keyword) {
-        baseUrlExtention += `/${encodeURIComponent(keyword)}`;
+        baseUrlExtension += `/${encodeURIComponent(keyword)}`;
     } else {
         switch (searchType) {
             case 'Article':
@@ -18,19 +18,19 @@ export function buildQuery(searchParams: SearchProps): string {
                 }
                 break;
             case 'DOI':
-                baseUrlExtention += '/doi';
+                baseUrlExtension += '/doi';
                 if (dois && dois.length > 0) {
                     queryParams.push(`dois=${dois.join(',')}`);
                 }
                 break;
             case 'ISSN':
-                baseUrlExtention += '/issn';
+                baseUrlExtension += '/issn';
                 if (serialNumber) {
                     queryParams.push(`issn=${serialNumber}`);
                 }
                 break;
             case 'ISBN':
-                baseUrlExtention += '/isbn';
+                baseUrlExtension += '/isbn';
                 if (serialNumber) {
                     queryParams.push(`isbn=${serialNumber}`);
                 }
@@ -48,13 +48,10 @@ export function buildQuery(searchParams: SearchProps): string {
         }
     }
 
-    if (literatureType && searchType !== 'Keyword' && !literatureType.exclude && literatureType.type !== 'Both') {
+    if (literatureType && literatureType.type !== 'Both') {
         queryParams.push(`literatureType=${literatureType.type}`);
     }
 
-    if (literatureType && literatureType.exclude) {
-        queryParams.push(`exclude=${encodeURIComponent(`{"type":"${literatureType.type}"}`)}`);
-    }
 
-    return baseUrlExtention +`?${queryParams.join(' ')}` + (openAccess ? `&openAccess=true` : '')
+    return baseUrlExtension +`?${queryParams.join(' ')}` + (openAccess ? `&openAccess=true` : '')
 }

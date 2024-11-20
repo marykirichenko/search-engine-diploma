@@ -3,11 +3,11 @@ import { Button, Snackbar, Alert } from '@mui/material';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { handleExport } from '@/utils/handleExport';
 
-const ExportButton = ({ query, startIdx, type }: { query: string, startIdx: number, type: string }) => {
+const ExportButton = ({ query, startIdx }: { query: string, startIdx: number }) => {
     const [open, setOpen] = useState(false);
 
     const handleClick = async () => {
-        await handleExport(query, startIdx, type);
+        await handleExport(query, startIdx);
         setOpen(true);
     };
 

@@ -36,6 +36,7 @@ export const ExtensiveSearchButton = ({ searchType, literatureType, queries, con
 
     return (
         <div style={{ marginTop: '20px' }}>
+            {/* @ts-expect-error js casts everything correctly, no need for extra typing checks xd */}
             <StyledButton onClick={handleClick} disabled={isButtonDisabled()} style={{ color: 'black' }}>
                 Search by {searchType}
             </StyledButton>

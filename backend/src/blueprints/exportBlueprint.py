@@ -3,6 +3,8 @@ from utils import utils
 from .searchBlueprints import search, search_by_keyword, search_by_doi, search_by_isbn, search_by_issn
 
 export_blueprint = Blueprint('export', __name__)
+
+
 # http://127.0.0.1:5000/api/export?amountOfArticles=100&isbn=978-0-387-79148-7&type=isbn
 @export_blueprint.route('/export', methods=['GET'])
 def export_articles():
@@ -71,7 +73,6 @@ def export_articles():
         request.args = temp_args
 
         if isinstance(results, tuple):
-
             return results.get_json()
         all_results.extend(results.get_json())
 

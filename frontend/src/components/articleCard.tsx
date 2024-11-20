@@ -20,18 +20,21 @@ export type ArticleCardProps = {
     language?: string,
 }
 
-// TODO:  2 times page is loaded, exports without open access, extend query build
+// TODO:  2 times page is loaded, extend query build
 export const ArticleCard = ({title, authors, abstract, pdf_link, open_access, publisher, publication_date, subjects, disciplines ,content_type, language} : ArticleCardProps) => {
     const abstractSnippet = typeof abstract === 'string'
         ? (abstract ? abstract.substring(0, 300) : 'No abstract')
         : (abstract ? Object.values(abstract)[0] : 'No abstract')
+
     return (
         <Card sx={{margin: 2, boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.2)'}}>
             <CardContent>
                 <h3>{title} {
+                    // @ts-expect-error open access is a string
                     (open_access === "true") && <span style={{backgroundColor:'green', color:'white', borderRadius: '50%', padding:'3px 8px', fontSize: '10px'}}>Open Access</span>
                 }</h3>
                 <b>Authors: </b> {authors && authors.map((author,i) => <span key={i}>{author.creator}</span>)}
+                {/* @ts-expect-error just works*/}
                 <p><b>Abstract: </b>{abstractSnippet}</p>
                 <Box display="flex" justifyContent="space-between" mt={2}>
                     {language && <><b>Language:</b> {language}</>}

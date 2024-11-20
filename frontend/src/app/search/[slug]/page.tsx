@@ -5,10 +5,10 @@ interface Params {
 }
 
 type SearchParams =
-    | { query: string, openAccess?: string }
-    | { issn: string, openAccess?: string }
-    | { doi: string, openAccess?: string }
-    | { isbn: string, openAccess?: string };
+    | { query: string, openAccess?: string, literatureType?: string }
+    | { issn: string, openAccess?: string, literatureType?: string }
+    | { dois: string, openAccess?: string, literatureType?: string }
+    | { isbn: string, openAccess?: string, literatureType?: string };
 
 export default async function SearchPage({ params, searchParams }: { params: Params, searchParams: SearchParams }) {
     let query = '';
@@ -16,7 +16,7 @@ export default async function SearchPage({ params, searchParams }: { params: Par
         query = `${params.slug}?query=${searchParams.query}`;
     } else if ('issn' in searchParams) {
         query = `${params.slug}?issn=${searchParams.issn}`;
-    } else if (params.slug==='doi') {
+    } else if (params.slug==='doi' && 'dois' in searchParams) {
         query = `${params.slug}?dois=${searchParams.dois}`;
     } else if ('isbn' in searchParams) {
         query = `${params.slug}?isbn=${searchParams.isbn}`;

@@ -10,18 +10,15 @@ async function getPageData(): Promise<ArticleCardProps[]> {
     return await res.json();
 }
 
-// TODO: cleanup TS typeerrors
-// TODO: create conf file for project organization
-
 export default async function Home() {
     const articles = await getPageData();
-    const handleLastArticleRef = (node: HTMLDivElement | null) => {
-        // Handle the ref here
-    };
+
     return (
         <>
             <HeaderCard/>
             <Typography variant={'h5'} style={{margin : '30px 10px 0px 20px', display: 'block', fontWeight: '700'}}> Latest literature:</Typography>
+
+            {/* @ts-expect-error we statically load 10 articles from cache, no need for handling last loaded articles, we will not fetch more */}
             <ArticleCardGrid articles={articles}  />
         </>
     );

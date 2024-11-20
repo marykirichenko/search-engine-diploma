@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request
 from utils import utils
-import json
 
 search_blueprint = Blueprint('search', __name__)
 
@@ -17,7 +16,6 @@ def search():
     dateto = request.args.get('dateto')
     type = request.args.get('literatureType')
     openAccess = request.args.get('openAccess', 'false') == 'true'
-
 
     if type and not utils.is_in_types(type):
         return jsonify({"error": "Invalid literature type"}), 400
@@ -61,7 +59,6 @@ def search_by_doi():
     else:
         return jsonify({"error": "DOIs should be provided"}), 400
 
-
     start = request.args.get('start', 1)
     datefrom = request.args.get('datefrom')
     dateto = request.args.get('dateto')
@@ -91,7 +88,6 @@ def search_by_isbn():
     type = request.args.get('literatureType')
     openAccess = request.args.get('openAccess', 'false') == 'true'
 
-
     if type and not utils.is_in_types(type):
         return jsonify({"error": "Invalid literature type"}), 400
 
@@ -115,7 +111,6 @@ def search_by_issn():
     type = request.args.get('literatureType')
     openAccess = request.args.get('openAccess', 'false') == 'true'
 
-
     if type and not utils.is_in_types(type):
         return jsonify({"error": "Invalid literature type"}), 400
 
@@ -123,5 +118,3 @@ def search_by_issn():
     formatted_results = utils.format_search_results(raw_results)
 
     return jsonify(formatted_results)
-
-

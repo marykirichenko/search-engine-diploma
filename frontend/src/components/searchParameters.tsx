@@ -82,6 +82,7 @@ export const SearchParameters = () => {
                     handleChange={handleBookChange}
                     dateRange={dateRange}
                     setDateRange={setDateRange}
+                    openAccess={openAccess}
                     setOpenAccess={handleOpenAccessChange}
                 />
                 <QueryOptions
@@ -101,6 +102,7 @@ export const SearchParameters = () => {
                     handleChange={handleBookChange}
                     dateRange={dateRange}
                     setDateRange={setDateRange}
+                    openAccess={openAccess}
                     setOpenAccess={handleOpenAccessChange}
                 />
                 <DOIOptions dois={dois} setDois={setDois}/>
@@ -113,6 +115,7 @@ export const SearchParameters = () => {
                     handleChange={handleBookChange}
                     dateRange={dateRange}
                     setDateRange={setDateRange}
+                    openAccess={openAccess}
                     setOpenAccess={handleOpenAccessChange}
                 />
                 <SerialNumberOptions serialNumberType={'ISSN'} serialNumber={serialNumber} setSerialNumber={setSerialNumber} />
@@ -125,6 +128,7 @@ export const SearchParameters = () => {
                     handleChange={handleBookChange}
                     dateRange={dateRange}
                     setDateRange={setDateRange}
+                    openAccess={openAccess}
                     setOpenAccess={handleOpenAccessChange}
                 />
                 <SerialNumberOptions serialNumberType={'ISBN'} serialNumber={serialNumber} setSerialNumber={setSerialNumber} />

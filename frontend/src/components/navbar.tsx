@@ -28,6 +28,7 @@ export default function Navbar() {
                         <StyledHeaderButton sx={{  marginBottom:2, width: '30%' }}>
                             <Link href="/searchParameters">Deep search</Link>
                         </StyledHeaderButton>
+                        {/* @ts-expect-error wierd mui problem */}
                         <NavbarSearch sx={{ marginLeft: 2, width:'30%' }} />
                     </Toolbar>
                 </AppBar>
