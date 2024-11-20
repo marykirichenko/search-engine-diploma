@@ -46,7 +46,7 @@ export default async function SearchPage({ params, searchParams }: { params: Par
 
     if(Object.keys(searchParams).length > 0 ) {
         const [key, value] = Object.entries(searchParams)[0];
-        const headerQuery = !['issn', 'isbn', 'doi','query'].includes(params.slug)?`keyword ${params.slug}`:`${key}: ${value}`;
+        const headerQuery = !['issn', 'isbn', 'doi','query'].includes(params.slug)?`keyword ${params.slug}`:`${key}: ${value.split(' ')[0]}`;
         return <SearchResults query={query} headerQuery={headerQuery} openAccess={searchParams.openAccess === 'true'}/>;
     }else{
         return <SearchResults query={query} headerQuery={params.slug} openAccess={searchParams.openAccess === 'true'}/>;
