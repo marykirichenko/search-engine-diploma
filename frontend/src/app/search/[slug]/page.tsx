@@ -21,7 +21,7 @@ export default async function SearchPage({ params, searchParams }: { params: Par
     } else if ('isbn' in searchParams) {
         query = `${params.slug}?isbn=${searchParams.isbn}`;
     } else if (!['issn', 'isbn', 'doi','query'].includes(params.slug)){
-        query = `${params.slug}${searchParams.literatureType? `&literatureType=${searchParams.literatureType}?`:'?'}`;
+        query = `${params.slug}?${searchParams.literatureType? `&literatureType=${searchParams.literatureType}?`:'?'}`;
     }
 
     const queryParams = new URLSearchParams();
